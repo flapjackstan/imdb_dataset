@@ -1,0 +1,18 @@
+unnamed-chunk-1	library
+unnamed-chunk-2	getwd	setwd
+unnamed-chunk-3	read.csv
+unnamed-chunk-4	dim	imdb
+unnamed-chunk-5	imdb	names
+unnamed-chunk-6	%>%	<	budget	dim	filter
+unnamed-chunk-7	::	~	aes	budgetM	facet_wrap	geom_point	ggplot	grossM	imdb	labs	stat_smooth
+unnamed-chunk-8	$	%>%	aes	as.character	budget	c	genre_main	geom_density_ridges	ggplot	gross	grossM	labs	map	mutate	scale_x_continuous	strsplit	unlist
+unnamed-chunk-9	
+unnamed-chunk-10	$	%>%	aes	as.character	budget	c	genre_main	geom_density_ridges	ggplot	gross	grossM	labs	map	mutate	scale_x_continuous	strsplit	unlist
+unnamed-chunk-11	
+fig1	::	aes	budget	geom_point	ggplot	imdb	imdb_score	labs
+fig.	::	aes	budget	geom_point	ggplot	imdb	imdb_score	labs	stat_smooth
+Scatter1	::	aes	budget	geom_point	ggplot	imdb	imdb_score	labs
+Scatter2	::	aes	budget	geom_point	ggplot	imdb	imdb_score	labs	stat_smooth
+Scatter3	::	~	aes	budget	facet_wrap	geom_point	ggplot	imdb	imdb_score	labs	stat_smooth
+scatter4	$	%>%	aes	as.character	budget	c	genre_main	geom_density_ridges	ggplot	gross	grossM	labs	map	mutate	scale_x_continuous	strsplit	unlist
+scatter5	%>%	~	aes	budgetM	c	content_rating	facet_wrap	filter	geom_point	ggplot	grossM	imdb	labs	stat_smooth

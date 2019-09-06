@@ -1,0 +1,175 @@
+---
+title: "Problem Set 1"
+author: "Elmer Camargo + Nick Trella"
+subtitle: MGSC 310, Fall 2019, Professor Hersh
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+# change to your own working directory
+
+knitr::opts_knit$set(root.dir = 'C:/Users/Elmer/Documents/R/Statistical Modeling/PSET1/imdb_dataset')
+
+setwd('C:/Users/Elmer/Documents/R/Statistical Modeling/PSET1/imdb_dataset')
+
+# set seed to your own favorite number
+set.seed(1818)
+options(width=70)
+
+# general rchunk code options
+knitr::opts_chunk$set(
+	fig.align = "center",
+	fig.height = 4,
+	fig.width = 5,
+	message = FALSE,
+	warning = FALSE,
+	autodep = TRUE,
+	cache = TRUE,
+	cache.comments = FALSE,
+	collapse = TRUE,
+	size = "vsmall",
+	tidy = TRUE,
+	tidy.opts = list(width.wrap = 50)
+)
+opts_chunk$set(message = FALSE,
+               warning = FALSE,
+               cache = TRUE,
+               autodep = TRUE,
+               cache.comments = FALSE,
+               collapse = TRUE,
+               fig.width = 5,  
+               fig.height = 4,
+               fig.align='center')
+
+
+```
+
+## Libraries Needed
+```{r}
+library("tidyverse")
+library("ggplot2") 
+library("ggthemes")
+library('ggridges')
+```
+
+## Question 1: Getting and Setting Working Directories)
+
+```{r}
+getwd()
+setwd("C:/Users/Elmer/Documents/R/Statistical Modeling/PSET1/imdb_dataset")
+```
+
+## Question 2: Reading CSV File)
+
+
+```{r}
+imdb = read.csv("movie_metadata.csv")
+```
+
+## Question 3: Dimensions
+
+```{r}
+dim(imdb)
+```
+
+## Question 4: Variable/Column Names
+
+```{r}
+names(imdb)
+```
+
+## Question 5: Using ggplot()
+
+```{r Scatter1, fig.width=6, fig.height=4}
+sp1 <- 
+  ggplot(data = imdb)+ 
+  geom_point( mapping = aes(x = imdb_score, y = budget)) +
+  labs(x = "IMDB Score",
+       y = "Budget",
+       title = "IMDB Score by Budget (Categorized by Rating)")+
+  ggthemes::theme_economist()
+
+sp1
+```
+
+## Question 6: Validating Data and Filtering
+
+```{r}
+imdb <- imdb %>% filter(budget < 400000000)
+dim(imdb)
+```
+
+## Question 7: Using stat_smooth()
+
+```{r Scatter2, fig.width= 6, fig.height= 4}
+sp2 <- 
+  ggplot(data = imdb)+ 
+  geom_point( mapping = aes(x = imdb_score, y = budget)) +
+  stat_smooth( mapping = aes(x = imdb_score,y = budget) )+
+  labs(x = "IMDB Score",
+       y = "Budget",
+       title = "IMDB Score by Budget (Categorized by Rating)")+
+  ggthemes::theme_economist()
+
+sp2
+```
+
+## Question 8: Using facet_wrap()
+
+```{r Scatter3, fig.width=10, fig.height=8}
+sp3 <- 
+  ggplot(data = imdb)+ 
+  geom_point( mapping = aes(x = imdb_score, y = budget)) +
+  stat_smooth( mapping = aes(x = imdb_score,y = budget) )+
+  facet_wrap(~ content_rating, scales = "free") +
+  labs(x = "IMDB Score",
+       y = "Budget",
+       title = "IMDB Score by Budget (Categorized by Rating)")+
+  ggthemes::theme_economist()
+sp3
+```
+
+## Question 9: Using ggridges
+
+```{r scatter4, echo=FALSE, fig.height=10, fig.width=10}
+imdb <- imdb %>% 
+  mutate(genre_main = unlist(map(strsplit(as.character(imdb$genres),"\\|"),1)),
+         grossM = gross / 1000000,
+         budgetM = budget / 1000000)
+
+sp4 <- ggplot(imdb, aes(x = grossM, y = genre_main, fill = genre_main)) + 
+  geom_density_ridges() + 
+  scale_x_continuous(limits = c(0, 500)) +
+  labs(x = "Box Office Gross (USD Millions)", 
+       y = "Main Genre",
+       title = "Gross by Genre")
+sp4
+```
+
+## Question 10 Exploring Data
+
+We chose to compare budget and gross across rate PG -13 and R rated movies. Big Budget PG -13 Movies are made for more of a mass appeal in mind (e.g. Fast and Furious, Transformers) with the hopes of major grossing while movies rated R have a much wider range for budgets and grossing. Some rated R movies such The Shape of Water will have a relatively lower budget but still get a high gross because of the critical acclaim. They tend to be more specialized movies where budget isn't as important of a factor in the success of the movie
+
+```{r scatter5, fig.width=10, fig.height=6}
+filterd <- imdb %>% filter(content_rating %in% c("PG","R"))
+
+sp5 <- 
+  ggplot(data = filterd)+ 
+  geom_point( mapping = aes(x = budgetM, y = grossM)) +
+  stat_smooth( mapping = aes(x = budgetM,y = grossM) )+
+  facet_wrap(~ content_rating, scales = "free") +
+  labs(x = "Budget",
+       y = "Gross",
+       title = "Budget by Gross (Categorized by Rating)")
+
+sp5
+
+```
+
+
